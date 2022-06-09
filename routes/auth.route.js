@@ -1,8 +1,9 @@
-import express from "express"
+import {Router} from "express"
 import { login, register } from "../controllers/auth.controller.js"
 import {body} from "express-validator"
 import { validationResultExpress } from "../middlewares/validationResultExpress.js"
-const router = express.Router()
+
+const router = Router()
 
 
 router.post(
@@ -11,6 +12,7 @@ router.post(
                 body("email", "Formato de email es incorrecto")
                     .trim()
                     .isEmail()
+                    
                     .normalizeEmail(),
                 body("password", "Error Minimo debe contener la contraseña 6 carácteres")
                     .trim()

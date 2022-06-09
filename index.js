@@ -9,7 +9,7 @@ const app = express();
 //Recibe datos JSON
 app.use(express.json());
 
-app.use("/",authRouter)
+app.use("/api/v1/auth",authRouter)
 
 
 const PORT = process.env.PORT || 5000
