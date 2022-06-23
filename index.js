@@ -31,6 +31,9 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
+// ejemplo back redirect (opcional)
+app.use("/", redirectRouter);
+
 //Recibe datos JSON
 app.use(express.json());
 
