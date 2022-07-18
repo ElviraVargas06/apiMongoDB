@@ -10,8 +10,8 @@ export const register = async (req, res) => {
     try {
         //Alternativa buscando por email
 
-        let user = await User.findOne({ nombre, email });
-        if (user) throw new Error("Email ya registrado 😒");
+        let user = await User.findOne({ email });
+        if (user) throw new Error("Email ya se encuentra registrado 😒");
 
         
 
@@ -39,11 +39,11 @@ export const login = async (req, res)=>{
         let user = await User.findOne({email})
         if(!user) 
         
-            return res.status(403).json({error: "No existe el usuario"})
+            return res.status(403).json({msg: "Usuario y/o Contraseña se encuentra incorrecta"})
 
         const respuestaPassword = await user.comparePassword(password)
         if(!respuestaPassword)
-            return res.status(403).json({error: "Contraseña incorrecta"})
+            return res.status(403).json({msg: "Usuario y/o Contraseña se encuentra incorrecta"})
         
             //Generar el token JWT
 
@@ -55,7 +55,7 @@ export const login = async (req, res)=>{
             
     } catch (error) {
         console.log(error)
-        return res.status(500).json({error: "Error de Servidor"})
+        return res.status(500).json({msg: "Error de Servidor comuniquese con el Administrador"})
     }
     
 }
@@ -92,4 +92,3 @@ export const logout = (req, res) => {
     res.clearCookie("refreshToken");
     return res.json({ ok: true });
 };
-
