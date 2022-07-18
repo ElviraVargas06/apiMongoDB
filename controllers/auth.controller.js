@@ -5,15 +5,17 @@ import { generateToken, generateRefreshToken } from "../utils/tokenManager.js";
 
 export const register = async (req, res) => {
 
-    const { email, password } = req.body;
+    const {nombre, email, password } = req.body;
 
     try {
         //Alternativa buscando por email
 
-        let user = await User.findOne({ email });
+        let user = await User.findOne({ nombre, email });
         if (user) throw new Error("Email ya registrado 😒");
 
-        user = new User({ email, password });
+        
+
+        user = new User({ nombre, email, password });
         await user.save();
 
         
@@ -22,7 +24,7 @@ export const register = async (req, res) => {
         const { token, expiresIn } = generateToken(user.id);
         generateRefreshToken(user.id, res);
 
-        return res.json({ token, expiresIn });
+        return res.json({ user, token, expiresIn });
 
     } catch (error) {
         console.log(error)
@@ -33,7 +35,7 @@ export const register = async (req, res) => {
 export const login = async (req, res)=>{
 
     try {
-        const {email, password} = req.body
+        const { email, password} = req.body
         let user = await User.findOne({email})
         if(!user) 
         
@@ -49,7 +51,7 @@ export const login = async (req, res)=>{
         const { token, expiresIn } = generateToken(user.id);
         generateRefreshToken(user.id, res);
 
-        return res.json({ token, expiresIn });
+        return res.json({ user, token, expiresIn });
             
     } catch (error) {
         console.log(error)
@@ -90,3 +92,4 @@ export const logout = (req, res) => {
     res.clearCookie("refreshToken");
     return res.json({ ok: true });
 };
+
